@@ -2,135 +2,128 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Doom-like Web Game</title>
+<title>Private Access</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body {
-    margin: 0;
-    background: #0b0b0f;
-    color: #fff;
-    font-family: monospace;
-    overflow: hidden;
+:root{
+  --bg:#0b0d12;
+  --panel:#121623;
+  --accent:#6b7cff;
+  --text:#ffffff;
+  --muted:#9aa3c7;
 }
-#ui {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    font-size: 16px;
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
+body{background:radial-gradient(1200px 600px at 50% -10%, #11163a, transparent),var(--bg);color:var(--text)}
+
+nav{
+  position:fixed;top:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 36px;
+  background:rgba(11,13,18,.65);
+  backdrop-filter:blur(14px);
+  z-index:1000
 }
-canvas {
-    display: block;
+nav .logo{font-weight:800;letter-spacing:.5px}
+nav a{color:var(--muted);text-decoration:none;margin-left:22px;font-size:14px}
+nav a:hover{color:#fff}
+
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 20px 40px
 }
+.hero h1{font-size:56px;line-height:1.05;margin-bottom:18px}
+.hero p{max-width:640px;margin:auto;color:var(--muted);font-size:18px}
+
+.btn{
+  display:inline-block;margin-top:34px;padding:14px 44px;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),#8f9bff);
+  color:#fff;text-decoration:none;font-weight:600;
+  box-shadow:0 10px 30px rgba(107,124,255,.35);
+  transition:.25s
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(107,124,255,.5)}
+
+section{max-width:1200px;margin:auto;padding:90px 28px}
+h2{font-size:36px;margin-bottom:14px}
+.desc{color:var(--muted);margin-bottom:44px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px}
+.card{
+  background:linear-gradient(180deg,#141a2e,#101526);
+  border-radius:22px;padding:28px;
+  border:1px solid rgba(255,255,255,.06);
+  transition:.25s
+}
+.card:hover{transform:translateY(-6px);border-color:rgba(107,124,255,.45)}
+.card h3{color:#b8c0ff;margin-bottom:8px}
+
+.buy{
+  background:linear-gradient(135deg,#6b7cff,#4b5cff);
+  border-radius:28px;padding:60px;text-align:center
+}
+.buy h2{font-size:40px}
+.buy .btn{background:#fff;color:#000}
+
+.faq .q{
+  background:var(--panel);border-radius:18px;padding:22px;margin-bottom:14px;
+  border:1px solid rgba(255,255,255,.06)
+}
+footer{text-align:center;color:var(--muted);padding:36px 20px}
 </style>
 </head>
 <body>
 
-<div id="ui">Kills: <span id="kills">0</span></div>
-<canvas id="game"></canvas>
+<nav>
+  <div class="logo">PRIVATE</div>
+  <div>
+    <a href="#about">О проекте</a>
+    <a href="#inside">Контент</a>
+    <a href="#buy">Доступ</a>
+    <a href="https://t.me/yourchannel" target="_blank">TG</a>
+  </div>
+</nav>
 
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+<div class="hero">
+  <div>
+    <h1>Закрытый<br>приват‑доступ</h1>
+    <p>Ограниченное сообщество с эксклюзивным контентом. Без публичных раздач и лишних людей.</p>
+    <a class="btn" href="#buy">Получить доступ</a>
+  </div>
+</div>
 
-const player = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-    speed: 4
-};
+<section id="about">
+  <h2>О проекте</h2>
+  <p class="desc">Приватный формат. Вход только по доступу. Проект поддерживается и обновляется.</p>
+</section>
 
-let keys = {};
-let bullets = [];
-let enemies = [];
-let kills = 0;
+<section id="inside">
+  <h2>Что внутри</h2>
+  <p class="desc">Контент доступен только участникам</p>
+  <div class="grid">
+    <div class="card"><h3>Приватные материалы</h3><p>Эксклюзив, которого нет в открытом доступе.</p></div>
+    <div class="card"><h3>Настройки и сборки</h3><p>Актуальные подборки и обновления.</p></div>
+    <div class="card"><h3>Обновления</h3><p>Регулярное пополнение и фиксы.</p></div>
+    <div class="card"><h3>Закрытый чат</h3><p>Комьюнити и поддержка.</p></div>
+  </div>
+</section>
 
-document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
-document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+<section id="buy">
+  <div class="buy">
+    <h2>Пожизненный доступ</h2>
+    <p>Покупка в разработке</p>
+    <a class="btn" href="https://t.me/yourbot" target="_blank">Перейти в Telegram</a>
+  </div>
+</section>
 
-canvas.addEventListener("click", e => {
-    const angle = Math.atan2(e.clientY - player.y, e.clientX - player.x);
-    bullets.push({
-        x: player.x,
-        y: player.y,
-        dx: Math.cos(angle) * 8,
-        dy: Math.sin(angle) * 8
-    });
-});
+<section class="faq">
+  <h2>FAQ</h2>
+  <div class="q"><strong>Как получить доступ?</strong><br>Через Telegram после подтверждения.</div>
+  <div class="q"><strong>Обновления?</strong><br>Добавляются регулярно.</div>
+</section>
 
-function spawnEnemy() {
-    const edge = Math.floor(Math.random() * 4);
-    let x, y;
-    if (edge === 0) { x = 0; y = Math.random() * canvas.height; }
-    if (edge === 1) { x = canvas.width; y = Math.random() * canvas.height; }
-    if (edge === 2) { x = Math.random() * canvas.width; y = 0; }
-    if (edge === 3) { x = Math.random() * canvas.width; y = canvas.height; }
-
-    enemies.push({ x, y, speed: 1.5 });
-}
-
-setInterval(spawnEnemy, 1000);
-
-function update() {
-    if (keys["w"]) player.y -= player.speed;
-    if (keys["s"]) player.y += player.speed;
-    if (keys["a"]) player.x -= player.speed;
-    if (keys["d"]) player.x += player.speed;
-
-    bullets.forEach(b => {
-        b.x += b.dx;
-        b.y += b.dy;
-    });
-
-    enemies.forEach(e => {
-        const angle = Math.atan2(player.y - e.y, player.x - e.x);
-        e.x += Math.cos(angle) * e.speed;
-        e.y += Math.sin(angle) * e.speed;
-    });
-
-    bullets.forEach((b, bi) => {
-        enemies.forEach((e, ei) => {
-            const dist = Math.hypot(b.x - e.x, b.y - e.y);
-            if (dist < 15) {
-                bullets.splice(bi, 1);
-                enemies.splice(ei, 1);
-                kills++;
-                document.getElementById("kills").textContent = kills;
-            }
-        });
-    });
-}
-
-function draw() {
-    ctx.fillStyle = "#0b0b0f";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#7c6cff";
-    ctx.beginPath();
-    ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#fff";
-    bullets.forEach(b => {
-        ctx.fillRect(b.x, b.y, 4, 4);
-    });
-
-    ctx.fillStyle = "#ff3b3b";
-    enemies.forEach(e => {
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, 10, 0, Math.PI * 2);
-        ctx.fill();
-    });
-}
-
-function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-}
-
-loop();
-</script>
+<footer>© 2026 Private Project</footer>
 
 </body>
 </html>
